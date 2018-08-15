@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import com.example.evoliris.totalrpg.Db.DBHelper;
 import com.example.evoliris.totalrpg.models.Score;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class ScoreDAO {
@@ -77,6 +79,37 @@ public class ScoreDAO {
         score.setScore(cursor.getInt(cursor.getColumnIndex(COL_SCORE)));
 
         return score;
+    }
+
+    public List<Score> findAll(){
+        Cursor cursor = findCursorAll();
+
+        if(cursor.getCount() <= 0)return null;
+        cursor.moveToFirst();
+        ArrayList<Score> users = new ArrayList<Score>();
+
+        do{
+            users.add(from(cursor));
+        }while (cursor.moveToNext());
+
+        return users;
+    }
+
+    public Cursor findCursorAll(){
+        return db.rawQuery(String.format("SELECT * FROM %s", TABLE_NAME), null);
+    }
+
+
+    public Score from(Cursor cursor) {
+        int idColonneIndex = cursor.getColumnIndex(COL_ID);
+        int nameColonneIndex = cursor.getColumnIndex(COL_PLAYER_NAME);
+        int pwdColonneIndex = cursor.getColumnIndex(COL_SCORE);
+
+        long idValue = cursor.getLong(idColonneIndex);
+        String nameValue = cursor.getString(nameColonneIndex);
+        long pwdValue = cursor.getInt(pwdColonneIndex);
+
+        return new Score(idValue, nameValue, pwdValue);
     }
 
 }

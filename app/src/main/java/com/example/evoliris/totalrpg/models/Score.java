@@ -5,6 +5,14 @@ public class Score {
     private String playerName;
     private int score;
 
+    public Score(long id, String playerName, long score){
+
+    }
+
+    public Score(){
+
+    }
+
     public long getId() {
         return id;
     }

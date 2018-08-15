@@ -7,11 +7,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.evoliris.totalrpg.Db.DAO.ScoreDAO;
 import com.example.evoliris.totalrpg.models.Entity;
 import com.example.evoliris.totalrpg.models.Monster;
+import com.example.evoliris.totalrpg.models.Score;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -29,7 +33,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.initializeItem();
+        ScoreDAO maDb = new ScoreDAO(this);
+        maDb.openWriteable();
+        maDb.insert(new Score(1, "marsu", 100));
+        maDb.close();
+
+        maDb.openWriteable();
+        List<Score> mesScores = maDb.findAll();
+        maDb.close();
+
+        String strPersos ="";
+
+        Score monScore = new Score(1, "marsu", 100);
+        Score monstreCourent = new Score(2, "marsu", 100);
+
+
+        for (Score item : mesScores
+                ) {
+            strPersos +=  item;
+
+        }
+
+        Toast.makeText(this, strPersos, Toast.LENGTH_SHORT).show();
+
+
+
+        //this.initializeItem();
         //this.startGame();
     }
 
